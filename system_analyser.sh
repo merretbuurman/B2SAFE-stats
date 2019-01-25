@@ -15,4 +15,3 @@ ps -eo pcpu,pid,user,args | sort -k 1 -r  | wc -l | awk '{printf "        \"TotN
 
 echo "    }"
 echo "}"
-
