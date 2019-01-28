@@ -114,5 +114,3 @@ $ crontab -l
 `system_stats.sh` appends it to the logs `/var/lib/irods/msiExecCmd_bin/system_stats.json` and 
 `/var/lib/irods/msiExecCmd_bin/system_stats-error.json` as json info on one line.
 
-
-*PROBLEM: This is a multiline log, so for collection by Filebeat, this is not ideal.*
