@@ -4,6 +4,10 @@ B2SAFE Accounting (with APEL system)
 This describes how to collect accounting info from B2SAFE
 and send it to Logstash using Filebeat.
 
+Note: So far, only for the *system_stats* and *quota_stats*, 
+triggered by cronjobs. The info collection triggered directly 
+by the irods rules is not included here yet!
+
 # Gathering B2SAFE accounting info
 
 Install the packages jq (https://stedolan.github.io/jq) and sysstat.
