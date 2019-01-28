@@ -1,0 +1,63 @@
+filebeat.inputs:
+- type: log
+  enabled: true
+  paths:
+    - "/usr/share/filebeat/var/lib/irods/msiExecCmd_bin/quota.json"
+  fields:
+    is_seadata: true
+    is_apel_accounting: true
+    is_from_eudat_seadata_filebeat: true
+    filter_code: "de.dkrz.seadata.filter_code.apel.quota.json.20190128"
+  fields_under_root: true
+- type: log
+  enabled: true
+  paths:
+    - "/usr/share/filebeat/var/lib/irods/msiExecCmd_bin/quota-error.log"
+  fields:
+    is_seadata: true
+    is_apel_accounting: true
+    is_from_eudat_seadata_filebeat: true
+    filter_code: "de.dkrz.seadata.filter_code.apel.quota.error.20190128"
+  fields_under_root: true
+- type: log
+  enabled: true
+  paths:
+    - "/usr/share/filebeat/var/lib/irods/msiExecCmd_bin/system_stat.json"
+  fields:
+    is_seadata: true
+    is_apel_accounting: true
+    is_from_eudat_seadata_filebeat: true
+    filter_code: "de.dkrz.seadata.filter_code.apel.system_stats.json.20190128"
+  fields_under_root: true
+- type: log
+  enabled: true
+  paths:
+    - "/usr/share/filebeat/var/lib/irods/msiExecCmd_bin/system_stats-error.log"
+  fields:
+    is_seadata: true
+    is_apel_accounting: true
+    is_from_eudat_seadata_filebeat: true
+    filter_code: "de.dkrz.seadata.filter_code.apel.system_stats.error.20190128"
+  fields_under_root: true
+
+
+output.logstash:
+  hosts: ["my-logstash.de:5044"]
+
+
+###
+### Optional:
+### Logging of Filebeat itself
+###
+#https://www.elastic.co/guide/en/beats/filebeat/current/configuration-logging.html
+logging.level: info
+logging.json: true
+logging.to_files: true
+logging.metrics.enabled: false
+logging.to_syslog: false
+logging.to_eventlog: false
+logging.files:
+  path: /usr/share/filebeat/logs/
+  name: filebeatlog
+  keepfiles: 10
+
