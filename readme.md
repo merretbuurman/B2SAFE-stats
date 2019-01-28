@@ -114,3 +114,24 @@ $ crontab -l
 `system_stats.sh` appends it to the logs `/var/lib/irods/msiExecCmd_bin/system_stats.json` and 
 `/var/lib/irods/msiExecCmd_bin/system_stats-error.json` as json info on one line.
 
+
+## Run Filebeat
+
+In order to collect the info from the logs and send them to
+Logstash, run a Filebeat instance, using the files 
+`docker-compose.yml` and `filebeat.yml` from this repo.
+
+Of course, `docker` and `docker-compose` need to be installed.
+
+Make sure you adapt the paths inside the `docker-compose.yml`
+according to your system.
+
+```
+mkdir FILEBEAT
+cd FILEBEAT
+vi docker-compose.yml       # add content
+vi filebeat.yml             # add content
+sudo chown 0 filebeat.yml
+docker-compose up
+
+```
