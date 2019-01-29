@@ -22,7 +22,7 @@ filebeat.inputs:
 - type: log
   enabled: true
   paths:
-    - "/usr/share/filebeat/var/lib/irods/msiExecCmd_bin/system_stat.json"
+    - "/usr/share/filebeat/var/lib/irods/msiExecCmd_bin/system_stats.json"
   fields:
     is_seadata: true
     is_apel_accounting: true
