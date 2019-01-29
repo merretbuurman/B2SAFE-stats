@@ -1,0 +1,22 @@
+{
+     "iRodsNumProcs" => 6,
+        "Swap-total" => 0,
+       "TotNumProcs" => 179,
+         "Swap-free" => 0,
+        "Mem-shared" => 133,
+              "type" => "system_stats",
+           "CPU%usr" => 0.13,
+        "@timestamp" => 2018-10-24T14:39:23.874Z,
+          "Mem-used" => 630,
+    "Mem-buff/cache" => 6875,
+           "CPU%sys" => 0.28,
+          "CPU%idle" => 99.26,
+         "Swap-unit" => "MB",
+          "@version" => "1",
+         "Mem-total" => 23949,
+     "Mem-available" => 22766,
+          "Mem-unit" => "MB",
+        "CPU%iowait" => 0,
+          "Mem-free" => 16442,
+         "Swap-used" => 0
+}

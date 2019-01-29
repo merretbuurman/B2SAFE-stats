@@ -1,0 +1,12 @@
+{
+     "@timestamp" => 2018-10-24T14:44:13.314Z,
+        "address" => "127.0.0.1",
+           "zone" => "sdcCineca",
+       "@version" => "1",
+     "proxy_user" => "irodsmaster",
+    "auth_scheme" => "native",
+     "proxy_zone" => "sdcCineca",
+        "message" => "auth_scheme=native, client_addr=127.0.0.1, proxy_rods_zone=sdcCineca, proxy_user_name=irodsmaster, user_rods_zone=sdcCineca, user_user_name=irodsmaster",
+           "type" => "access",
+           "user" => "irodsmaster"
+}

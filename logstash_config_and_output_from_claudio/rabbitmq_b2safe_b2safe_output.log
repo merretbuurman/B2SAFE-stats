@@ -1,0 +1,18 @@
+{
+         "source_pid" => "21.T12995/c127d21a-5432-11e8-9a5c-fa163e7b6737",
+        "destination" => "/sdcCineca/home/claudio/test2.txt",
+         "registered" => "true",
+           "rulename" => "EUDATReplication",
+        "source_type" => "object",
+             "source" => "/sdcCineca/home/claudio/test.txt",
+            "message" => "user=claudio;zone=sdcCineca;rule=EUDATReplication;status=true;response=source=/sdcCineca/home/claudio/test.txt;;destination=/sdcCineca/home/claudio/test2.txt;;registered=true;;recursive=false;;response=source_type=object;;source=/sdcCineca/home/claudio/test.txt;;destination=/sdcCineca/home/claudio/test2.txt;;sourcePid=21.T12995/c127d21a-5432-11e8-9a5c-fa163e7b6737;;destinationPid=21.T12995/65B842AE-58F9-11E8-A53C-FA163E7B6737;;response=None",
+               "type" => "b2safe_operation",
+    "destination_pid" => "21.T12995/65B842AE-58F9-11E8-A53C-FA163E7B6737",
+          "recursive" => "false",
+         "@timestamp" => 2018-10-24T14:53:37.849Z,
+               "zone" => "sdcCineca",
+           "@version" => "1",
+            "details" => "None",
+               "user" => "claudio",
+             "status" => "true"
+}
