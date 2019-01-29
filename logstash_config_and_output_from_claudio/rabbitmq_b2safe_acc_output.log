@@ -1,0 +1,274 @@
+{
+           "path" => "/sdcCineca/orders",
+     "@timestamp" => 2018-10-24T14:33:23.422Z,
+           "size" => 4217002665,
+        "objects" => 2005,
+       "@version" => "1",
+           "type" => "irods_accounting",
+    "record_type" => "total"
+}
+{
+           "path" => "/sdcCineca/orders",
+     "@timestamp" => 2018-10-24T14:33:23.422Z,
+           "size" => 4217002665,
+        "objects" => 2005,
+       "@version" => "1",
+           "type" => "irods_accounting",
+           "user" => "httpadmin",
+    "record_type" => "user"
+}
+{
+           "path" => "/sdcCineca",
+     "@timestamp" => 2018-10-24T14:33:23.422Z,
+           "size" => 18963817010,
+          "level" => "root",
+        "objects" => 424073,
+       "@version" => "1",
+           "type" => "irods_accounting",
+    "record_type" => "total"
+}
+{
+           "path" => "/sdcCineca",
+     "@timestamp" => 2018-10-24T14:33:23.422Z,
+           "size" => 52,
+          "level" => "root",
+        "objects" => 5,
+       "@version" => "1",
+           "type" => "irods_accounting",
+           "user" => "merret",
+    "record_type" => "user"
+}
+{
+           "path" => "/sdcCineca",
+     "@timestamp" => 2018-10-24T14:33:23.422Z,
+           "size" => 7083,
+          "level" => "root",
+        "objects" => 9,
+       "@version" => "1",
+           "type" => "irods_accounting",
+           "user" => "stresstest",
+    "record_type" => "user"
+}
+{
+           "path" => "/sdcCineca",
+     "@timestamp" => 2018-10-24T14:33:23.422Z,
+           "size" => 4257222481,
+          "level" => "root",
+        "objects" => 1019,
+       "@version" => "1",
+           "type" => "irods_accounting",
+           "user" => "marco",
+    "record_type" => "user"
+}
+{
+           "path" => "/sdcCineca",
+     "@timestamp" => 2018-10-24T14:33:23.422Z,
+           "size" => 8432436863,
+          "level" => "root",
+        "objects" => 422753,
+       "@version" => "1",
+           "type" => "irods_accounting",
+           "user" => "httpadmin",
+    "record_type" => "user"
+}
+{
+           "path" => "/sdcCineca",
+     "@timestamp" => 2018-10-24T14:33:23.422Z,
+           "size" => 65345,
+          "level" => "root",
+        "objects" => 42,
+       "@version" => "1",
+           "type" => "irods_accounting",
+           "user" => "claudio",
+    "record_type" => "user"
+}
+{
+           "path" => "/sdcCineca",
+     "@timestamp" => 2018-10-24T14:33:23.422Z,
+           "size" => 1825208829,
+          "level" => "root",
+        "objects" => 161,
+       "@version" => "1",
+           "type" => "irods_accounting",
+           "user" => "sbregent",
+    "record_type" => "user"
+}
+{
+           "path" => "/sdcCineca",
+     "@timestamp" => 2018-10-24T14:33:23.422Z,
+           "size" => 29804,
+          "level" => "root",
+        "objects" => 2,
+       "@version" => "1",
+           "type" => "irods_accounting",
+           "user" => "bbroeren",
+    "record_type" => "user"
+}
+{
+           "path" => "/sdcCineca",
+     "@timestamp" => 2018-10-24T14:33:23.422Z,
+           "size" => 592,
+          "level" => "root",
+        "objects" => 3,
+       "@version" => "1",
+           "type" => "irods_accounting",
+           "user" => "paolobeta",
+    "record_type" => "user"
+}
+{
+           "path" => "/sdcCineca",
+     "@timestamp" => 2018-10-24T14:33:23.422Z,
+           "size" => 4448836072,
+          "level" => "root",
+        "objects" => 49,
+       "@version" => "1",
+           "type" => "irods_accounting",
+           "user" => "svanderhorst",
+    "record_type" => "user"
+}
+{
+           "path" => "/sdcCineca/trash",
+     "@timestamp" => 2018-10-24T14:33:23.422Z,
+           "size" => nil,
+        "objects" => 0,
+       "@version" => "1",
+           "type" => "irods_accounting",
+    "record_type" => "total"
+}
+{
+           "path" => "/sdcCineca/home",
+     "@timestamp" => 2018-10-24T14:33:23.422Z,
+           "size" => 4257370310,
+        "objects" => 1111,
+       "@version" => "1",
+           "type" => "irods_accounting",
+    "record_type" => "total"
+}
+{
+           "path" => "/sdcCineca/home",
+     "@timestamp" => 2018-10-24T14:33:23.422Z,
+           "size" => 52,
+        "objects" => 5,
+       "@version" => "1",
+           "type" => "irods_accounting",
+           "user" => "merret",
+    "record_type" => "user"
+}
+{
+           "path" => "/sdcCineca/home",
+     "@timestamp" => 2018-10-24T14:33:23.422Z,
+           "size" => 4257222481,
+        "objects" => 1019,
+       "@version" => "1",
+           "type" => "irods_accounting",
+           "user" => "marco",
+    "record_type" => "user"
+}
+{
+           "path" => "/sdcCineca/home",
+     "@timestamp" => 2018-10-24T14:33:23.422Z,
+           "size" => 10,
+        "objects" => 2,
+       "@version" => "1",
+           "type" => "irods_accounting",
+           "user" => "httpadmin",
+    "record_type" => "user"
+}
+{
+           "path" => "/sdcCineca/home",
+     "@timestamp" => 2018-10-24T14:33:23.422Z,
+           "size" => 65345,
+        "objects" => 42,
+       "@version" => "1",
+           "type" => "irods_accounting",
+           "user" => "claudio",
+    "record_type" => "user"
+}
+{
+           "path" => "/sdcCineca/home",
+     "@timestamp" => 2018-10-24T14:33:23.422Z,
+           "size" => 42137,
+        "objects" => 8,
+       "@version" => "1",
+           "type" => "irods_accounting",
+           "user" => "sbregent",
+    "record_type" => "user"
+}
+{
+           "path" => "/sdcCineca/home",
+     "@timestamp" => 2018-10-24T14:33:23.422Z,
+           "size" => 29804,
+        "objects" => 2,
+       "@version" => "1",
+           "type" => "irods_accounting",
+           "user" => "bbroeren",
+    "record_type" => "user"
+}
+{
+           "path" => "/sdcCineca/home",
+     "@timestamp" => 2018-10-24T14:33:23.422Z,
+           "size" => 592,
+        "objects" => 3,
+       "@version" => "1",
+           "type" => "irods_accounting",
+           "user" => "paolobeta",
+    "record_type" => "user"
+}
+{
+           "path" => "/sdcCineca/batches",
+     "@timestamp" => 2018-10-24T14:33:23.422Z,
+           "size" => 6274009847,
+        "objects" => 211,
+       "@version" => "1",
+           "type" => "irods_accounting",
+    "record_type" => "total"
+}
+{
+           "path" => "/sdcCineca/batches",
+     "@timestamp" => 2018-10-24T14:33:23.422Z,
+           "size" => 7083,
+        "objects" => 9,
+       "@version" => "1",
+           "type" => "irods_accounting",
+           "user" => "stresstest",
+    "record_type" => "user"
+}
+{
+           "path" => "/sdcCineca/batches",
+     "@timestamp" => 2018-10-24T14:33:23.422Z,
+           "size" => 1825166692,
+        "objects" => 153,
+       "@version" => "1",
+           "type" => "irods_accounting",
+           "user" => "sbregent",
+    "record_type" => "user"
+}
+{
+           "path" => "/sdcCineca/batches",
+     "@timestamp" => 2018-10-24T14:33:23.422Z,
+           "size" => 4448836072,
+        "objects" => 49,
+       "@version" => "1",
+           "type" => "irods_accounting",
+           "user" => "svanderhorst",
+    "record_type" => "user"
+}
+{
+           "path" => "/sdcCineca/cloud",
+     "@timestamp" => 2018-10-24T14:33:23.422Z,
+           "size" => 4215434188,
+        "objects" => 420746,
+       "@version" => "1",
+           "type" => "irods_accounting",
+    "record_type" => "total"
+}
+{
+           "path" => "/sdcCineca/cloud",
+     "@timestamp" => 2018-10-24T14:33:23.422Z,
+           "size" => 4215434188,
+        "objects" => 420746,
+       "@version" => "1",
+           "type" => "irods_accounting",
+           "user" => "httpadmin",
+    "record_type" => "user"
+}
