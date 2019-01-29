@@ -5,6 +5,13 @@ import sys
 import logging
 import logging.handlers
 import argparse
+import os
+
+# TODO: Good way to set these! Read from file?
+SEND_TO_RABBIT = True
+WRITE_TO_TOPIC_LOG = True
+BASE_DIR = '/var/lib/irods/log/'
+BASE_DIR = BASE_DIR.rstrip(os.sep)
 
 logger = logging.getLogger('rabbitMQClient')
 
@@ -26,6 +33,20 @@ def pubMessage(args):
                           body=msg)
     connection.close()
 
+
+def write_topic_log(args):
+    """Note: Routing keys are: system_stats, user_op, user_login, accounting_stats, b2safe_op"""
+    msg = ' '.join(args.message)
+
+    # Remove newlines:
+    # TODO TEST!
+    if '\n' in msg:
+      msg = msg.replace('\n', ' ')
+
+    # Write to log
+    filepath = BASE_DIR + os.sep + args.routingKey + '.log'
+    with open(filepath, 'a') as f:
+      f.write(msg)
 
 def _initializeLogger(args):
     """initialize the logger instance."""
@@ -55,5 +76,9 @@ if __name__ == "__main__":
 
     _args = parser.parse_args()
     _initializeLogger(_args)
-    _args.func(_args)
+    
+    if SEND_TO_RABBIT:
+      pubMessage(_args)
 
+    if WRITE_TO_TOPIC_LOG:
+      write_topic_log(_args)
