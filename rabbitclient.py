@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
-import pika
 import sys
 import logging
 import logging.handlers
 import argparse
 import os
+# Note: pika is imported below in case RabbitMQ should be used!
 
 # TODO: Good way to set these! Read from file?
 SEND_TO_RABBIT = True
@@ -112,7 +112,15 @@ if __name__ == "__main__":
 
     _args = parser.parse_args()
     _initializeLogger(_args)
-    
+
+    # Try to import pika    
+    if SEND_TO_RABBIT:
+        try:
+            import pika
+        except ImportError as e:
+            logger.error('Could not import pika. Will not send logs to RabbitMQ.')
+            SEND_TO_RABBIT = False
+
     if SEND_TO_RABBIT:
       pubMessage(_args)
 
