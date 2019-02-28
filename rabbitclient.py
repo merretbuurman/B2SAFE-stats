@@ -118,8 +118,9 @@ if __name__ == "__main__":
         try:
             import pika
         except ImportError as e:
-            logger.error('Could not import pika. Will not send logs to RabbitMQ.')
+            logger.error('Could not import pika. Will not send logs to RabbitMQ. Will write logs to file.')
             SEND_TO_RABBIT = False
+            WRITE_TO_TOPIC_LOG = True
 
     if SEND_TO_RABBIT:
       pubMessage(_args)
