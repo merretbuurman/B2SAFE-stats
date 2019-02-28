@@ -48,8 +48,10 @@ def pub_message_to_rabbit(message_list, topic, category):
         logger.debug('Connecting to RabbitMQ at %s:%s/%s (user %s)...', RABBIT_HOST, RABBIT_VHOST, RABBIT_PORT, RABBIT_USER)
         connection = pika.BlockingConnection(params)
         logger.debug('Connecting to RabbitMQ... done.')
+        logger.debug('Creating channel...')
         channel = connection.channel()
-        logger.debug('Channel created...')
+        logger.debug('Creating channel... done.')
+        logger.debug('Publishing message (exchange %s, routing key %s)...', topic, category)
         props = pika.BasicProperties(
             delivery_mode = 2 # persistent! otherwise, they may be dropped if RabbitMQ crashes
         )
@@ -59,9 +61,10 @@ def pub_message_to_rabbit(message_list, topic, category):
             routing_key=category,
             body=msg
         )
-        logger.debug('Message published...')        
+        logger.debug('Publishing message... done.)
+        logger.debug('Closing connection...')
         connection.close()
-        logger.debug('Connection closed...')
+        logger.debug('Closing connection... done')
         return True
 
     except pika.exceptions.ConnectionClosed as e1:
