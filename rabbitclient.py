@@ -61,14 +61,6 @@ def make_category_logger_and_write(msg, category, base_dir):
     when it is created."
     '''
 
-    # If "topic" ends by dot-integer, add an underscore,
-    # otherwise this will lead to confusing filenames during
-    # log-rotation.
-    if '.' in category:
-        tmp = category.split('.')
-        if tmp[-1].isdigit():
-            category += '_'
-
     # Create the logger
     category_logger = logging.getLogger(category)
     category_logger.propagate = False
