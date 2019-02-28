@@ -25,13 +25,13 @@ RABBIT_PORT = 5672
 # This is the logger for the script
 logger = logging.getLogger('rabbitMQClient')
 
-def pub_message_to_rabbit(args):
+def pub_message_to_rabbit(message_list, topic, category):
 
-    msg = ' '.join(args.message)
+    msg = ' '.join(message_list)
     logger.info('Publishing the message [{}] to the exchange (topic) {}'
                 + ' with the routing key (category): {}'.format(msg, 
-                                                             args.topic,
-                                                             args.category))
+                                                             topic,
+                                                             category))
     credentials = pika.PlainCredentials(RABBIT_USER, RABBIT_PASSWORD)
 
     # TODO: Make sure to catch and handle all kinds of exceptions!
@@ -40,8 +40,8 @@ def pub_message_to_rabbit(args):
                                          credentials=credentials))
     channel = connection.channel()
 
-    channel.basic_publish(exchange=args.topic,
-                          routing_key=args.category,
+    channel.basic_publish(exchange=topic,
+                          routing_key=category,
                           body=msg)
     connection.close()
 
@@ -86,7 +86,7 @@ def make_category_logger_and_write(msg, category, base_dir):
 
 def write_category_log(message_list, category):
     """Note: categories are: system_stats, user_op, user_login, accounting_stats, b2safe_op"""
-    msg = ' '.join(args.message)
+    msg = ' '.join(message_list)
 
     # Remove newlines:
     # TODO TEST!
@@ -136,8 +136,8 @@ if __name__ == "__main__":
 
     # Send log msg to RabbitMQ
     if SEND_TO_RABBIT:
-        pub_message_to_rabbit(_args)
+        pub_message_to_rabbit(_args.message, _args.topic, _args.category)
 
     # Send log msg to file
     if WRITE_TO_CATEGORY_LOG:
-        write_category_log(_args)
+        write_category_log(_args.message, _args.category)
