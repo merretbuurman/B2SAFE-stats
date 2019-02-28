@@ -25,13 +25,13 @@ RABBIT_PORT = 5672
 # This is the logger for the script
 logger = logging.getLogger('rabbitMQClient')
 
-def pubMessage(args):
+def pub_message_to_rabbit(args):
 
     msg = ' '.join(args.message)
-    logger.info('Publishing the message [{}] to the echange (topic) {}'
-                + ' with the routing key (queue): {}'.format(msg, 
-                                                             args.exchange,
-                                                             args.routingKey))
+    logger.info('Publishing the message [{}] to the exchange (topic) {}'
+                + ' with the routing key (category): {}'.format(msg, 
+                                                             args.topic,
+                                                             args.category))
     credentials = pika.PlainCredentials(RABBIT_USER, RABBIT_PASSWORD)
 
     # TODO: Make sure to catch and handle all kinds of exceptions!
@@ -40,8 +40,8 @@ def pubMessage(args):
                                          credentials=credentials))
     channel = connection.channel()
 
-    channel.basic_publish(exchange=args.exchange,
-                          routing_key=args.routingKey,
+    channel.basic_publish(exchange=args.topic,
+                          routing_key=args.category,
                           body=msg)
     connection.close()
 
@@ -85,7 +85,7 @@ def make_topic_logger_and_write(msg, topic, base_dir):
 
 
 def write_topic_log(args):
-    """Note: Routing keys are: system_stats, user_op, user_login, accounting_stats, b2safe_op"""
+    """Note: categories are: system_stats, user_op, user_login, accounting_stats, b2safe_op"""
     msg = ' '.join(args.message)
 
     # Remove newlines:
@@ -94,7 +94,7 @@ def write_topic_log(args):
       msg = msg.replace('\n', ' ')
 
     # Write to log
-    make_topic_logger_and_write(msg, args.routingKey, BASE_DIR)
+    make_topic_logger_and_write(msg, args.category, BASE_DIR)
 
 def _initializeLogger(args):
     """initialize the logger instance."""
@@ -117,8 +117,8 @@ if __name__ == "__main__":
     parser.add_argument("-l", "--log", help="Path to the log file")
     parser.add_argument("-d", "--debug", help="Show debug output",
                         action="store_true")
-    parser.add_argument("exchange", help='the message topic')
-    parser.add_argument("routingKey", help='the message queue')
+    parser.add_argument("topic", help='the message topic (used as exchange name in RabbitMQ)')
+    parser.add_argument("category", help='the message category (used as routing key in RabbitMQ)')
     parser.add_argument("message", nargs='+', help='the message content')
     parser.set_defaults(func=pubMessage)
 
@@ -136,7 +136,7 @@ if __name__ == "__main__":
 
     # Send log msg to RabbitMQ
     if SEND_TO_RABBIT:
-        pubMessage(_args)
+        pub_message_to_rabbit(_args)
 
     # Send log msg to file
     if WRITE_TO_TOPIC_LOG:
