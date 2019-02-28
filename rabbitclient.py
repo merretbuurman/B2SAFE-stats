@@ -65,7 +65,7 @@ def make_topic_logger_and_write(msg, topic, base_dir):
     if '.' in topic:
         t = topic.split('.')
         if t[-1].isdigit():
-            topic = topic+='_'
+            topic += '_'
 
     # Create the logger
     topic_logger = logging.getLogger(topic)
