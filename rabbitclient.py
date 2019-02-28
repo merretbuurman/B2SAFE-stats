@@ -36,6 +36,18 @@ def pubMessage(args):
     connection.close()
 
 def make_topic_logger_and_write(msg, topic, base_dir):
+    '''
+    Rotation is fine with Filebeat, see this thread on the
+    Filebeat forum:
+    https://discuss.elastic.co/t/will-filebeat-handle-properly-the-underlying-log-file-rotation/56119
+    "Filebeat will continue to read from the rotated log even
+    after it is moved until the file reaches a certain age
+    (base on modified time) or is deleted. It tracks the file
+    by inode number which doesn't change when renamed. It will
+    also periodically look for a new files matching the mysqld.log
+    file name so that can start reading from the new log file
+    when it is created."
+    '''
     # TODO: Check that name is not ending with dot-integer!
     topic_logger = logging.getLogger(topic)
     topic_logger.propagate = False
