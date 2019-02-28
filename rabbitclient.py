@@ -31,10 +31,11 @@ logger = logging.getLogger('stat_info_distributor')
 def pub_message_to_rabbit(message_list, topic, category):
 
     msg = ' '.join(message_list)
-    logger.info('Publishing the message [{}] to the exchange (topic) {}'
-                + ' with the routing key (category): {}'.format(msg, 
+    logger.info(('Publishing the message "{}" to the exchange (topic) "{}"'
+                + ' with the routing key (category): "{}"').format(msg, 
                                                              topic,
                                                              category))
+
     credentials = pika.PlainCredentials(RABBIT_USER, RABBIT_PASSWORD)
 
     # TODO: Make sure to catch and handle all kinds of exceptions!
@@ -69,6 +70,7 @@ def make_category_logger_and_write(msg, category, base_dir):
     '''
 
     # Create the logger
+    logger.debug('Create logger for category %s', category)
     category_logger = logging.getLogger(category)
     category_logger.propagate = False
     category_logger.setLevel(logging.INFO)
@@ -82,6 +84,7 @@ def make_category_logger_and_write(msg, category, base_dir):
     category_logger.addHandler(han)
 
     # Log the message
+    logger.debug('Writing message %s', msg)
     category_logger.info(msg)
 
 
@@ -125,9 +128,12 @@ def _initializeLogger(args):
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser(description='EUDAT B2SAFE info distributor. '+
-        'This client can send messages to RabbitMQ or write to specific text files '+
-        'for being picked up by Filebeat.')
+    parser = argparse.ArgumentParser(description=('EUDAT B2SAFE info distributor. '+
+        'This client can send messages to RabbitMQ and/or write to specific text files '+
+        'for being picked up by Filebeat. The latter is the default.\n'+
+        'The text files are by default added into a subdirectory of base_dir.'+
+        'If RabbitMQ should be used, connection details have to be '+
+        'hard-coded into this script. '))
 
     parser.add_argument("-l", "--log", help="Path to the log file (debug logs of this script)")
     parser.add_argument("-d", "--debug", help="Set log level to debug",
@@ -139,9 +145,9 @@ if __name__ == "__main__":
     parser.add_argument("-bd", "--base_dir", help=("Path to the directory where to write files (defaults to %s)" % BASE_DIR),
                         nargs='?', default=BASE_DIR)
 
-    parser.add_argument("topic", help='the message topic (used as exchange name when sending to RabbitMQ, and dir name when writing to file)')
-    parser.add_argument("category", help='the message category (used as routing key in RabbitMQ, as file name when writing to file)')
-    parser.add_argument("message", nargs='+', help='the message content')
+    parser.add_argument("topic", help='Message topic (used as exchange name when sending to RabbitMQ, and dir name when writing to file)')
+    parser.add_argument("category", help='Message category (used as routing key in RabbitMQ, as file name when writing to file)')
+    parser.add_argument("message", nargs='+', help='Message content')
 
 
     _args = parser.parse_args()
@@ -150,9 +156,11 @@ if __name__ == "__main__":
 
     # Args override defaults:
     if _args.rabbit:
+        logger.info('Caller asks to send to RabbitMQ.')
         SEND_TO_RABBIT = True
 
     if _args.not_to_file:
+        logger.info('Caller asks not to write to text file.')
         WRITE_TO_CATEGORY_LOG = False
 
     # Try to import pika    
@@ -167,8 +175,10 @@ if __name__ == "__main__":
 
     # Send log msg to RabbitMQ
     if SEND_TO_RABBIT:
+        logger.info('Will send to RabbitMQ.')
         pub_message_to_rabbit(_args.message, _args.topic, _args.category)
 
     # Send log msg to file
     if WRITE_TO_CATEGORY_LOG:
+        logger.info('Will send to text file.')
         write_category_log(_args.message, _args.topic, _args.category, _args.base_dir)
