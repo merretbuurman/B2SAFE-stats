@@ -33,6 +33,21 @@ def pubMessage(args):
                           body=msg)
     connection.close()
 
+def make_topic_logger_and_write(msg, topic, base_dir):
+    # TODO: Check that name is not ending with dot-integer!
+    topic_logger = logging.getLogger(topic)
+    topic_logger.propagate = False
+    topic_logger.setLevel(logging.INFO)
+    filepath = BASE_DIR + os.sep + topic + '.log'
+    han = logging.handlers.RotatingFileHandler(filepath,
+        maxBytes=6000000,
+        backupCount=9
+    )
+    formatter = logging.Formatter('%(message)s')
+    han.setFormatter(formatter)
+    topic_logger.addHandler(han)
+    topic_logger.info(msg)
+
 
 def write_topic_log(args):
     """Note: Routing keys are: system_stats, user_op, user_login, accounting_stats, b2safe_op"""
@@ -44,9 +59,7 @@ def write_topic_log(args):
       msg = msg.replace('\n', ' ')
 
     # Write to log
-    filepath = BASE_DIR + os.sep + args.routingKey + '.log'
-    with open(filepath, 'a') as f:
-      f.write(msg)
+    make_topic_logger_and_write(msg, args.routingKey, BASE_DIR)
 
 def _initializeLogger(args):
     """initialize the logger instance."""
