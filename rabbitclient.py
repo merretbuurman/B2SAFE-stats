@@ -54,12 +54,19 @@ def pub_message_to_rabbit(message_list, topic, category):
         )
         connection.close()
         return True
+        
     except pika.exceptions.ConnectionClosed as e1:
-        logger.info('Caught exception: %s', e1)
+        logger.info('Caught exception (connection closed):')
         logger.error(e1)
     except socket.gaierror as e2:
-        logger.info('Caught socket error: %s (maybe typo in host "%s"?)', e2, RABBIT_HOST)
+        logger.info('Caught socket error (maybe typo in host "%s"?):' RABBIT_HOST)
         logger.error(e2)
+    except pika.exceptions.ProbableAuthenticationError as e3:
+        logger.info('Caught exception (wrong username and password?):')
+        logger.error(e3)
+    except pika.exceptions.AMQPConnectionError as e4:
+        logger.info('Caught exception:')
+        logger.error(e4)
     return False
 
 
