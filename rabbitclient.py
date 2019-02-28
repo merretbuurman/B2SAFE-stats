@@ -157,6 +157,7 @@ if __name__ == "__main__":
 
     # Try to import pika    
     if SEND_TO_RABBIT:
+        import socket
         try:
             import pika
         except ImportError as e:
