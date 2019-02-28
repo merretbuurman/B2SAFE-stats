@@ -119,14 +119,17 @@ def _initializeLogger(args):
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser(description='EUDAT B2SAFE rabbitMQ client')
+    parser = argparse.ArgumentParser(description='EUDAT B2SAFE info distributor. '+
+        'This client can send messages to RabbitMQ or write to specific text files '+
+        'for being picked up by Filebeat.')
 
-    parser.add_argument("-l", "--log", help="Path to the log file")
-    parser.add_argument("-d", "--debug", help="Show debug output",
+    parser.add_argument("-l", "--log", help="Path to the log file (debug logs of this script)")
+    parser.add_argument("-d", "--debug", help="Set log level to debug",
                         action="store_true")
-    parser.add_argument("topic", help='the message topic (used as exchange name in RabbitMQ)')
-    parser.add_argument("category", help='the message category (used as routing key in RabbitMQ)')
+    parser.add_argument("topic", help='the message topic (used as exchange name when sending to RabbitMQ, and dir name when writing to file)')
+    parser.add_argument("category", help='the message category (used as routing key in RabbitMQ, as file name when writing to file)')
     parser.add_argument("message", nargs='+', help='the message content')
+
 
     _args = parser.parse_args()
     _initializeLogger(_args)
