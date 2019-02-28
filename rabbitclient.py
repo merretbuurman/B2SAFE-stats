@@ -24,7 +24,6 @@ RABBIT_VHOST = '/'
 RABBIT_PORT = 5672
 RABBIT_SSL_ENABLED = False
 
-
 # This is the logger for the script
 logger = logging.getLogger('stat_info_distributor')
 
@@ -37,23 +36,32 @@ def pub_message_to_rabbit(message_list, topic, category):
                                                              category))
 
     credentials = pika.PlainCredentials(RABBIT_USER, RABBIT_PASSWORD)
-
-    # TODO: Make sure to catch and handle all kinds of exceptions!
-    connection = pika.BlockingConnection(
-        pika.ConnectionParameters(
-            host = RABBIT_HOST,
-            virtual_host = RABBIT_VHOST,
-            port = RABBIT_PORT, 
-            credentials = credentials,
-            ssl = RABBIT_SSL_ENABLED
-        )
+    params = pika.ConnectionParameters(
+        host = RABBIT_HOST,
+        virtual_host = RABBIT_VHOST,
+        port = RABBIT_PORT, 
+        credentials = credentials,
+        ssl = RABBIT_SSL_ENABLED
     )
-    channel = connection.channel()
 
-    channel.basic_publish(exchange=topic,
-                          routing_key=category,
-                          body=msg)
-    connection.close()
+    try:
+        connection = pika.BlockingConnection(params)
+        channel = connection.channel()
+        channel.basic_publish(
+            exchange=topic,
+            routing_key=category,
+            body=msg
+        )
+        connection.close()
+        return True
+    except pika.exceptions.ConnectionClosed as e1:
+        logger.info('Caught exception: %s', e1)
+        logger.error(e1)
+    except socket.gaierror as e2:
+        logger.info('Caught socket error: %s (maybe typo in host "%s"?)', e2, RABBIT_HOST)
+        logger.error(e2)
+    return False
+
 
 def make_category_logger_and_write(msg, category, base_dir):
     '''
@@ -174,11 +182,12 @@ if __name__ == "__main__":
             WRITE_TO_CATEGORY_LOG = True
 
     # Send log msg to RabbitMQ
+    rabbit_success = False
     if SEND_TO_RABBIT:
         logger.info('Will send to RabbitMQ.')
-        pub_message_to_rabbit(_args.message, _args.topic, _args.category)
+        rabbit_success = pub_message_to_rabbit(_args.message, _args.topic, _args.category)
 
     # Send log msg to file
-    if WRITE_TO_CATEGORY_LOG:
+    if WRITE_TO_CATEGORY_LOG or not rabbit_success:
         logger.info('Will send to text file.')
         write_category_log(_args.message, _args.topic, _args.category, _args.base_dir)
