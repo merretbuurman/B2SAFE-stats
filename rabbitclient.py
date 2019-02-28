@@ -12,6 +12,8 @@ SEND_TO_RABBIT = True
 WRITE_TO_TOPIC_LOG = True
 BASE_DIR = '/var/lib/irods/log/'
 BASE_DIR = BASE_DIR.rstrip(os.sep)
+STAT_LOGS_MAX_SIZE=6000000
+STAT_LOGS_BACKUP_COUNT=9
 
 logger = logging.getLogger('rabbitMQClient')
 
@@ -40,8 +42,8 @@ def make_topic_logger_and_write(msg, topic, base_dir):
     topic_logger.setLevel(logging.INFO)
     filepath = BASE_DIR + os.sep + topic + '.log'
     han = logging.handlers.RotatingFileHandler(filepath,
-        maxBytes=6000000,
-        backupCount=9
+        maxBytes=STAT_LOGS_MAX_SIZE,
+        backupCount=STAT_LOGS_BACKUP_COUNT
     )
     formatter = logging.Formatter('%(message)s')
     han.setFormatter(formatter)
