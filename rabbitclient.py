@@ -91,7 +91,12 @@ def write_category_log(message_list, topic, category, base_dir):
     # Create directory:
     dir_name = os.path.join(base_dir, topic)
     if not os.path.exists(dir_name):
-        os.makedirs(dir_name)
+        try:
+            logger.info('Creating directory %s', dir_name)
+            os.makedirs(dir_name)
+        except OSError as e:
+            logger.error(e)
+            raise e
 
     # Format message
     msg = ' '.join(message_list)
