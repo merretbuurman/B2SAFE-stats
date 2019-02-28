@@ -118,7 +118,7 @@ def write_category_log(message_list, topic, category, base_dir):
       msg = msg.replace('\n', ' ')
 
     # Write to log
-    make_category_logger_and_write(msg, args.category, dir_name)
+    make_category_logger_and_write(msg, category, dir_name)
 
 def _initializeLogger(args):
     """initialize the logger instance."""
