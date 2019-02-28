@@ -15,6 +15,14 @@ BASE_DIR = BASE_DIR.rstrip(os.sep)
 STAT_LOGS_MAX_SIZE=6000000
 STAT_LOGS_BACKUP_COUNT=9
 
+# RabbitMQ settings
+RABBIT_USER = 'xxxxx'
+RABBIT_PASSWORD = 'xxxxx'
+RABBIT_HOST = 'dummy.rabbit.it'
+RABBIT_PORT = 5672
+
+
+# This is the logger for the script
 logger = logging.getLogger('rabbitMQClient')
 
 def pubMessage(args):
@@ -24,9 +32,11 @@ def pubMessage(args):
                 + ' with the routing key (queue): {}'.format(msg, 
                                                              args.exchange,
                                                              args.routingKey))
-    credentials = pika.PlainCredentials('xxxxxx', 'yyyyy')
+    credentials = pika.PlainCredentials(RABBIT_USER, RABBIT_PASSWORD)
+
+    # TODO: Make sure to catch and handle all kinds of exceptions!
     connection = pika.BlockingConnection(pika.ConnectionParameters(
-                                         host='130.186.13.176', port=5672, 
+                                         host=RABBIT_HOST, port=RABBIT_PORT, 
                                          credentials=credentials))
     channel = connection.channel()
 
@@ -69,6 +79,8 @@ def make_topic_logger_and_write(msg, topic, base_dir):
     formatter = logging.Formatter('%(message)s')
     han.setFormatter(formatter)
     topic_logger.addHandler(han)
+
+    # Log the message
     topic_logger.info(msg)
 
 
@@ -122,8 +134,10 @@ if __name__ == "__main__":
             SEND_TO_RABBIT = False
             WRITE_TO_TOPIC_LOG = True
 
+    # Send log msg to RabbitMQ
     if SEND_TO_RABBIT:
-      pubMessage(_args)
+        pubMessage(_args)
 
+    # Send log msg to file
     if WRITE_TO_TOPIC_LOG:
-      write_topic_log(_args)
+        write_topic_log(_args)
