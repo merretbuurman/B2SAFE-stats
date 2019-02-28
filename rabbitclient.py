@@ -127,7 +127,6 @@ if __name__ == "__main__":
     parser.add_argument("topic", help='the message topic (used as exchange name in RabbitMQ)')
     parser.add_argument("category", help='the message category (used as routing key in RabbitMQ)')
     parser.add_argument("message", nargs='+', help='the message content')
-    parser.set_defaults(func=pubMessage)
 
     _args = parser.parse_args()
     _initializeLogger(_args)
