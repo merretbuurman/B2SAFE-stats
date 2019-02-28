@@ -25,7 +25,7 @@ RABBIT_PORT = 5672
 
 
 # This is the logger for the script
-logger = logging.getLogger('rabbitMQClient')
+logger = logging.getLogger('stat_info_distributor')
 
 def pub_message_to_rabbit(message_list, topic, category):
 
@@ -154,7 +154,7 @@ if __name__ == "__main__":
         except ImportError as e:
             logger.error('Could not import pika. Will not send logs to RabbitMQ. Will write logs to file.')
             SEND_TO_RABBIT = False
-            WRITE_TO_TOPIC_LOG = True
+            WRITE_TO_CATEGORY_LOG = True
 
     # Send log msg to RabbitMQ
     if SEND_TO_RABBIT:
