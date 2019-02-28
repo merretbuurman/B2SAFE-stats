@@ -50,7 +50,11 @@ def pub_message_to_rabbit(message_list, topic, category):
         logger.debug('Connecting to RabbitMQ... done.')
         channel = connection.channel()
         logger.debug('Channel created...')
+        props = pika.BasicProperties(
+            delivery_mode = 2 # persistent! otherwise, they may be dropped if RabbitMQ crashes
+        )
         channel.basic_publish(
+            properties=props,
             exchange=topic,
             routing_key=category,
             body=msg
