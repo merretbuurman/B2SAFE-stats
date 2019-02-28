@@ -7,9 +7,11 @@ import argparse
 import os
 # Note: pika is imported below in case RabbitMQ should be used!
 
-# TODO: Good way to set these! Read from file?
-SEND_TO_RABBIT = True
+# Where to send (will be overridden by command line args)
+SEND_TO_RABBIT = False
 WRITE_TO_CATEGORY_LOG = True
+
+# Text file settings
 BASE_DIR = '/var/lib/irods/log/'
 BASE_DIR = BASE_DIR.rstrip(os.sep)
 STAT_LOGS_MAX_SIZE=6000000
@@ -126,6 +128,10 @@ if __name__ == "__main__":
     parser.add_argument("-l", "--log", help="Path to the log file (debug logs of this script)")
     parser.add_argument("-d", "--debug", help="Set log level to debug",
                         action="store_true")
+    parser.add_argument("-r", "--rabbit", help="Send message to RabbitMQ, too",
+                        action="store_true")
+    parser.add_argument("-nf", "--not_to_file", help="Do not write messages to text files",
+                        action="store_true")
     parser.add_argument("topic", help='the message topic (used as exchange name when sending to RabbitMQ, and dir name when writing to file)')
     parser.add_argument("category", help='the message category (used as routing key in RabbitMQ, as file name when writing to file)')
     parser.add_argument("message", nargs='+', help='the message content')
@@ -133,6 +139,13 @@ if __name__ == "__main__":
 
     _args = parser.parse_args()
     _initializeLogger(_args)
+
+    # Args override defaults:
+    if _args.rabbit:
+        SEND_TO_RABBIT = True
+
+    if _args.not_to_file:
+        WRITE_TO_CATEGORY_LOG = False
 
     # Try to import pika    
     if SEND_TO_RABBIT:
