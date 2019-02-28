@@ -9,7 +9,7 @@ import os
 
 # TODO: Good way to set these! Read from file?
 SEND_TO_RABBIT = True
-WRITE_TO_TOPIC_LOG = True
+WRITE_TO_CATEGORY_LOG = True
 BASE_DIR = '/var/lib/irods/log/'
 BASE_DIR = BASE_DIR.rstrip(os.sep)
 STAT_LOGS_MAX_SIZE=6000000
@@ -45,7 +45,7 @@ def pub_message_to_rabbit(args):
                           body=msg)
     connection.close()
 
-def make_topic_logger_and_write(msg, topic, base_dir):
+def make_category_logger_and_write(msg, category, base_dir):
     '''
     Rotation is fine with Filebeat, see this thread on the
     Filebeat forum:
@@ -62,29 +62,29 @@ def make_topic_logger_and_write(msg, topic, base_dir):
     # If "topic" ends by dot-integer, add an underscore,
     # otherwise this will lead to confusing filenames during
     # log-rotation.
-    if '.' in topic:
-        t = topic.split('.')
-        if t[-1].isdigit():
-            topic += '_'
+    if '.' in category:
+        tmp = category.split('.')
+        if tmp[-1].isdigit():
+            category += '_'
 
     # Create the logger
-    topic_logger = logging.getLogger(topic)
-    topic_logger.propagate = False
-    topic_logger.setLevel(logging.INFO)
-    filepath = BASE_DIR + os.sep + topic + '.log'
+    category_logger = logging.getLogger(category)
+    category_logger.propagate = False
+    category_logger.setLevel(logging.INFO)
+    filepath = BASE_DIR + os.sep + category + '.log'
     han = logging.handlers.RotatingFileHandler(filepath,
         maxBytes=STAT_LOGS_MAX_SIZE,
         backupCount=STAT_LOGS_BACKUP_COUNT
     )
     formatter = logging.Formatter('%(message)s')
     han.setFormatter(formatter)
-    topic_logger.addHandler(han)
+    category_logger.addHandler(han)
 
     # Log the message
-    topic_logger.info(msg)
+    category_logger.info(msg)
 
 
-def write_topic_log(args):
+def write_category_log(message_list, category):
     """Note: categories are: system_stats, user_op, user_login, accounting_stats, b2safe_op"""
     msg = ' '.join(args.message)
 
@@ -94,7 +94,7 @@ def write_topic_log(args):
       msg = msg.replace('\n', ' ')
 
     # Write to log
-    make_topic_logger_and_write(msg, args.category, BASE_DIR)
+    make_category_logger_and_write(msg, args.category, BASE_DIR)
 
 def _initializeLogger(args):
     """initialize the logger instance."""
@@ -139,5 +139,5 @@ if __name__ == "__main__":
         pub_message_to_rabbit(_args)
 
     # Send log msg to file
-    if WRITE_TO_TOPIC_LOG:
-        write_topic_log(_args)
+    if WRITE_TO_CATEGORY_LOG:
+        write_category_log(_args)
