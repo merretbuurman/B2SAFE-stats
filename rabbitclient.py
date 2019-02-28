@@ -48,7 +48,16 @@ def make_topic_logger_and_write(msg, topic, base_dir):
     file name so that can start reading from the new log file
     when it is created."
     '''
-    # TODO: Check that name is not ending with dot-integer!
+
+    # If "topic" ends by dot-integer, add an underscore,
+    # otherwise this will lead to confusing filenames during
+    # log-rotation.
+    if '.' in topic:
+        t = topic.split('.')
+        if t[-1].isdigit():
+            topic = topic+='_'
+
+    # Create the logger
     topic_logger = logging.getLogger(topic)
     topic_logger.propagate = False
     topic_logger.setLevel(logging.INFO)
