@@ -21,7 +21,9 @@ STAT_LOGS_BACKUP_COUNT=9
 RABBIT_USER = 'xxxxx'
 RABBIT_PASSWORD = 'xxxxx'
 RABBIT_HOST = 'dummy.rabbit.it'
+RABBIT_VHOST = '/'
 RABBIT_PORT = 5672
+RABBIT_SSL_ENABLED = False
 
 
 # This is the logger for the script
@@ -37,9 +39,15 @@ def pub_message_to_rabbit(message_list, topic, category):
     credentials = pika.PlainCredentials(RABBIT_USER, RABBIT_PASSWORD)
 
     # TODO: Make sure to catch and handle all kinds of exceptions!
-    connection = pika.BlockingConnection(pika.ConnectionParameters(
-                                         host=RABBIT_HOST, port=RABBIT_PORT, 
-                                         credentials=credentials))
+    connection = pika.BlockingConnection(
+        pika.ConnectionParameters(
+            host = RABBIT_HOST,
+            virtual_host = RABBIT_VHOST,
+            port = RABBIT_PORT, 
+            credentials = credentials,
+            ssl = RABBIT_SSL_ENABLED
+        )
+    )
     channel = connection.channel()
 
     channel.basic_publish(exchange=topic,
