@@ -84,8 +84,15 @@ def make_category_logger_and_write(msg, category, base_dir):
     category_logger.info(msg)
 
 
-def write_category_log(message_list, category):
+def write_category_log(message_list, topic, category):
     """Note: categories are: system_stats, user_op, user_login, accounting_stats, b2safe_op"""
+
+    # Create directory:
+    dir_name = os.path.join(BASE_DIR, topic)
+    if not os.path.exists(dir_name):
+        os.makedirs(dir_name)
+
+    # Format message
     msg = ' '.join(message_list)
 
     # Remove newlines:
@@ -94,7 +101,7 @@ def write_category_log(message_list, category):
       msg = msg.replace('\n', ' ')
 
     # Write to log
-    make_category_logger_and_write(msg, args.category, BASE_DIR)
+    make_category_logger_and_write(msg, args.category, dir_name)
 
 def _initializeLogger(args):
     """initialize the logger instance."""
@@ -140,4 +147,4 @@ if __name__ == "__main__":
 
     # Send log msg to file
     if WRITE_TO_CATEGORY_LOG:
-        write_category_log(_args.message, _args.category)
+        write_category_log(_args.message, _args.topic, _args.category)
