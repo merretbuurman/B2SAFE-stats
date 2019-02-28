@@ -60,6 +60,7 @@ def pub_message_to_rabbit(message_list, topic, category):
             exchange=topic,
             routing_key=category,
             body=msg
+            #mandatory=True # otherwise server will drop the message if it cannot route it! May raise some Unroutable error. Does not work well with BlockingConnections, rather in asynchronous mode.
         )
         logger.debug('Publishing message... done.)
         logger.debug('Closing connection...')
