@@ -13,7 +13,6 @@ WRITE_TO_CATEGORY_LOG = True
 
 # Text file settings
 BASE_DIR = '/var/lib/irods/log/'
-BASE_DIR = BASE_DIR.rstrip(os.sep)
 STAT_LOGS_MAX_SIZE=6000000
 STAT_LOGS_BACKUP_COUNT=9
 
@@ -73,7 +72,7 @@ def make_category_logger_and_write(msg, category, base_dir):
     category_logger = logging.getLogger(category)
     category_logger.propagate = False
     category_logger.setLevel(logging.INFO)
-    filepath = BASE_DIR + os.sep + category + '.log'
+    filepath = base_dir + os.sep + category + '.log'
     han = logging.handlers.RotatingFileHandler(filepath,
         maxBytes=STAT_LOGS_MAX_SIZE,
         backupCount=STAT_LOGS_BACKUP_COUNT
@@ -86,11 +85,11 @@ def make_category_logger_and_write(msg, category, base_dir):
     category_logger.info(msg)
 
 
-def write_category_log(message_list, topic, category):
+def write_category_log(message_list, topic, category, base_dir):
     """Note: categories are: system_stats, user_op, user_login, accounting_stats, b2safe_op"""
 
     # Create directory:
-    dir_name = os.path.join(BASE_DIR, topic)
+    dir_name = os.path.join(base_dir, topic)
     if not os.path.exists(dir_name):
         os.makedirs(dir_name)
 
@@ -132,12 +131,16 @@ if __name__ == "__main__":
                         action="store_true")
     parser.add_argument("-nf", "--not_to_file", help="Do not write messages to text files",
                         action="store_true")
+    parser.add_argument("-bd", "--base_dir", help=("Path to the directory where to write files (defaults to %s)" % BASE_DIR),
+                        nargs='?', default=BASE_DIR)
+
     parser.add_argument("topic", help='the message topic (used as exchange name when sending to RabbitMQ, and dir name when writing to file)')
     parser.add_argument("category", help='the message category (used as routing key in RabbitMQ, as file name when writing to file)')
     parser.add_argument("message", nargs='+', help='the message content')
 
 
     _args = parser.parse_args()
+    _args.base_dir = _args.base_dir.rstrip(os.sep)  
     _initializeLogger(_args)
 
     # Args override defaults:
@@ -162,4 +165,4 @@ if __name__ == "__main__":
 
     # Send log msg to file
     if WRITE_TO_CATEGORY_LOG:
-        write_category_log(_args.message, _args.topic, _args.category)
+        write_category_log(_args.message, _args.topic, _args.category, _args.base_dir)
