@@ -45,16 +45,21 @@ def pub_message_to_rabbit(message_list, topic, category):
     )
 
     try:
+        logger.debug('Connecting to RabbitMQ at %s:%s/%s (user %s)...', RABBIT_HOST, RABBIT_VHOST, RABBIT_PORT, RABBIT_USER)
         connection = pika.BlockingConnection(params)
+        logger.debug('Connecting to RabbitMQ... done.')
         channel = connection.channel()
+        logger.debug('Channel created...')
         channel.basic_publish(
             exchange=topic,
             routing_key=category,
             body=msg
         )
+        logger.debug('Message published...')        
         connection.close()
+        logger.debug('Connection closed...')
         return True
-        
+
     except pika.exceptions.ConnectionClosed as e1:
         logger.info('Caught exception (connection closed):')
         logger.error(e1)
