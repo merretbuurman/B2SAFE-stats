@@ -145,6 +145,12 @@ def _initializeLogger(args):
         han.setFormatter(formatter)
         logger.addHandler(han)
 
+    if (args.output):
+        han = logging.StreamHandler(sys.stdout)
+        formatter = logging.Formatter('%(asctime)s %(levelname)s:%(message)s')
+        han.setFormatter(formatter)
+        logger.addHandler(han)
+
 
 if __name__ == "__main__":
 
@@ -156,6 +162,8 @@ if __name__ == "__main__":
         'hard-coded into this script. '))
 
     parser.add_argument("-l", "--log", help="Path to the log file (debug logs of this script)")
+    parser.add_argument("-o", "--output", help="Write log messages to stdout",
+                        action="store_true")
     parser.add_argument("-d", "--debug", help="Set log level to debug",
                         action="store_true")
     parser.add_argument("-r", "--rabbit", help="Send message to RabbitMQ, too",
