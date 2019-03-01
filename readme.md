@@ -23,6 +23,7 @@ Copy these files into `/var/lib/irods/msiExecCmd_bin`:
 * quota_stats_collector.py
 * system_stats.sh
 * system_analyser.sh
+* rabbitclient.py
 
 Make sure they are owned by your irods user and executable:
 
@@ -71,7 +72,61 @@ $ crontab -l
 ```
 
 
+Test the `rabbitclient.py` script:
+
+```
+python rabbitclient.py --help
+
+# Write to /var/lib/irods/log/...
+python rabbitclient.py -d -o mytopic mycategory mymessage
+python rabbitclient.py -d -l mylog.log mytopic mycategory mymessage
+
+# Write to ./
+python rabbitclient.py -d -o -bd '.' mytopic mycategory mymessage
+python rabbitclient.py -d -l mylog.log -bd '.' mytopic mycategory mymessage
+
+# Write to RabbitMQ, *not* to file
+# Make sure to adapt host, username, password etc. inside the script!
+python rabbitclient.py -r -nf -d -o myexchange myroutingkey mymessage
+python rabbitclient.py -r -nf -d -l mylog.log myexchange myroutingkey mymessage
+```
+
+Note: If errors occur during connection with RabbitMQ, the messages will
+be written to file. However, some errors that can happen server-side which
+lead to messages being lost, cannot be detected, so messages are not guaranteed
+to arrive.
+
+
 # What does it do?
+
+## During rule execution: Store Stats Info
+
+`store_stat_info.py` is a client that is called by B2SAFE when specific
+rules are executed. B2SAFE calls the client and passes some info to it.
+The python script takes care of either sending it to a RabbitMQ instance,
+or writing it to specific files. The latter is the default.
+
+The topic and the category are defined by B2SAFE.
+
+Text files:
+
+* Messages are written into `/var/lib/irods/log/<topic>/<category>.log`
+* These files are rotated
+
+RabbitMQ:
+
+* Sends messages to exchange `<topic>`, routing key `<category>`
+* Host, virtual host, port, ssl setting, username and password need to be
+  provided inside the script
+* the exchange needs to exist, and the routing keys need to lead somewhere
+  (i.e. bindings and queues need to be defined)! The client does not notice
+  if the server drops messages.
+* So, make sure to configure an alternate exchange for `<topic>` on the RabbitMQ server.
+
+Note: If errors occur during connection with RabbitMQ, the messages will
+be written to file. However, some errors that can happen server-side which
+lead to messages being lost, cannot be detected, so messages are not guaranteed
+to arrive.
 
 ## Quota Stats
 
@@ -138,4 +193,29 @@ vi filebeat.yml             # add content
 sudo chown 0 filebeat.yml
 docker-compose up
 
+```
+
+
+# Summary
+
+
+Categories:
+
+    """Note: categories are: system_stats, user_op, user_login, accounting_stats, b2safe_op"""
+
+
+
+* system_stats: Cronjob runs system_analyzer.sh, collected via system_stats.sh
+* user_login: ?
+* accounting_stats: Cronjob runs quota_stats_collector.py, collected via quota_stats.sh
+* b2safe_op: ?
+* user_op : Created by B2SAFE in certain rules:
+
+```
+[k204208@sdc-b2safe-test ~]$ grep -r user_op /etc/irods/*.re
+/etc/irods/core.re:    msiExecCmd("rabbitclient.py", "seadatacloud user_op '*op_info'",
+[k204208@sdc-b2safe-test ~]$ grep -r b2safe_op /etc/irods/*.re
+[k204208@sdc-b2safe-test ~]$ grep -r accounting_stats /etc/irods/*.re
+[k204208@sdc-b2safe-test ~]$ grep -r user_login /etc/irods/*.re
+[k204208@sdc-b2safe-test ~]$ grep -r system_stats /etc/irods/*.re
 ```
