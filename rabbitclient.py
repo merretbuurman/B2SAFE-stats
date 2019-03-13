@@ -17,15 +17,29 @@ STAT_LOGS_MAX_SIZE=6000000
 STAT_LOGS_BACKUP_COUNT=9
 
 # RabbitMQ settings
-RABBIT_USER = 'xxxxx'
-RABBIT_PASSWORD = 'xxxxx'
-RABBIT_HOST = 'dummy.rabbit.it'
-RABBIT_VHOST = '/'
+RABBIT_USER = 'foobar'
+RABBIT_PASSWORD = 'foobar'
+RABBIT_HOST = 'sdc-b2host-test.dkrz.de'
+RABBIT_VHOST = 'b2safe_log_test'
 RABBIT_PORT = 5672
-RABBIT_SSL_ENABLED = False
+RABBIT_SSL_ENABLED = False 
 
 # This is the logger for the script
 logger = logging.getLogger('stat_info_distributor')
+
+# This script's logs are written to /var/lib/irods/log/stat_info_distributor.log
+root = logging.getLogger()
+root.setLevel(logging.DEBUG)
+#handler = logging.StreamHandler(sys.stdout)
+filepath = BASE_DIR + os.sep + 'stat_info_distributor.log'
+handler = logging.handlers.RotatingFileHandler(filename,
+    maxBytes=STAT_LOGS_MAX_SIZE,
+    backupCount=STAT_LOGS_BACKUP_COUNT
+)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+root.addHandler(handler)
+
 
 def pub_message_to_rabbit(message_list, topic, category):
 
