@@ -1,46 +1,102 @@
 filebeat.inputs:
+
+# user_login = access = auth stats (triggered by ?)
 - type: log
   enabled: true
   paths:
-    - "/usr/share/filebeat/var/lib/irods/msiExecCmd_bin/quota.json"
+    - "/usr/share/filebeat/irods_accounting_logs/user_login.log"
+  fields_under_root: true
   fields:
     is_seadata: true
     is_apel_accounting: true
     is_from_eudat_seadata_filebeat: true
-    filter_code: "de.dkrz.seadata.filter_code.apel.quota.json.20190128"
-  fields_under_root: true
-- type: log
-  enabled: true
-  paths:
-    - "/usr/share/filebeat/var/lib/irods/msiExecCmd_bin/quota-error.log"
-  fields:
-    is_seadata: true
-    is_apel_accounting: true
-    is_from_eudat_seadata_filebeat: true
-    filter_code: "de.dkrz.seadata.filter_code.apel.quota.error.20190128"
-  fields_under_root: true
-- type: log
-  enabled: true
-  paths:
-    - "/usr/share/filebeat/var/lib/irods/msiExecCmd_bin/system_stats.json"
-  fields:
-    is_seadata: true
-    is_apel_accounting: true
-    is_from_eudat_seadata_filebeat: true
-    filter_code: "de.dkrz.seadata.filter_code.apel.system_stats.json.20190128"
-  fields_under_root: true
-- type: log
-  enabled: true
-  paths:
-    - "/usr/share/filebeat/var/lib/irods/msiExecCmd_bin/system_stats-error.log"
-  fields:
-    is_seadata: true
-    is_apel_accounting: true
-    is_from_eudat_seadata_filebeat: true
-    filter_code: "de.dkrz.seadata.filter_code.apel.system_stats.error.20190128"
-  fields_under_root: true
+    filter_code: "de.dkrz.seadata.filter_code.apel.20190313"
+    log_type: "de.dkrz.seadata.filter_code.apel.user_login.20190313"
 
 
+
+# b2safe_op = b2safe_operation = b2safe_b2safe (triggered by ?)
+- type: log
+  enabled: true
+  paths:
+    - "/usr/share/filebeat/irods_accounting_logs/b2safe_op.log"
+  fields_under_root: true
+  fields:
+    is_seadata: true
+    is_apel_accounting: true
+    is_from_eudat_seadata_filebeat: true
+    filter_code: "de.dkrz.seadata.filter_code.apel.20190313"
+    log_type: "de.dkrz.seadata.filter_code.apel.b2safe_op.20190313"
+
+
+
+# user_op = operation (triggered by rules)
+- type: log
+  enabled: true
+  paths:
+    - "/usr/share/filebeat/irods_accounting_logs/user_op.log"
+  fields_under_root: true
+  fields:
+    is_seadata: true
+    is_apel_accounting: true
+    is_from_eudat_seadata_filebeat: true
+    filter_code: "de.dkrz.seadata.filter_code.apel.20190313"
+    log_type: "de.dkrz.seadata.filter_code.apel.user_op.20190313"
+
+
+# quota_stats = acc = accounting_stats = irods_accounting (triggered by cron job)
+- type: log
+  enabled: true
+  paths:
+    - "/usr/share/filebeat/irods_accounting_logs/quota.log"
+  fields_under_root: true
+  fields:
+    is_seadata: true
+    is_apel_accounting: true
+    is_from_eudat_seadata_filebeat: true
+    filter_code: "de.dkrz.seadata.filter_code.apel.20190313"
+    log_type: "de.dkrz.seadata.filter_code.apel.quota_stats.20190313"
+
+- type: log
+  enabled: true
+  paths:
+    - "/usr/share/filebeat/irods_accounting_logs/quota-error.log"
+  fields_under_root: true
+  fields:
+    is_seadata: true
+    is_apel_accounting: true
+    is_from_eudat_seadata_filebeat: true
+    filter_code: "de.dkrz.seadata.filter_code.apel.20190313"
+    log_type: "de.dkrz.seadata.filter_code.apel.user_op.error.20190313"
+
+# system_stats = sys (triggered by cron job)
+- type: log
+  enabled: true
+  paths:
+    - "/usr/share/filebeat/irods_accounting_logs/system_stats.log"
+  fields_under_root: true
+  fields:
+    is_seadata: true
+    is_apel_accounting: true
+    is_from_eudat_seadata_filebeat: true
+    filter_code: "de.dkrz.seadata.filter_code.apel.20190313"
+    log_type: "de.dkrz.seadata.filter_code.apel.system_stats.20190313"
+
+- type: log
+  enabled: true
+  paths:
+    - "/usr/share/filebeat/irods_accounting_logs/system_stats-error.log"
+  fields_under_root: true
+  fields:
+    is_seadata: true
+    is_apel_accounting: true
+    is_from_eudat_seadata_filebeat: true
+    filter_code: "de.dkrz.seadata.filter_code.apel.20190313"
+    log_type: "de.dkrz.seadata.filter_code.apel.system_stats.error.20190313"
+
+###
+### Output to Logstash
+###
 output.logstash:
   hosts: ["my-logstash.de:5044"]
 

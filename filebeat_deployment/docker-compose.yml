@@ -5,7 +5,7 @@ services:
     image: docker.elastic.co/beats/filebeat:6.5.1
     volumes:
       - ./filebeat.yml:/usr/share/filebeat/filebeat.yml
-      - /var/lib/irods/msiExecCmd_bin:/usr/share/filebeat/var/lib/irods/msiExecCmd_bin/:ro
+      - /var/lib/irods/msiExecCmd_bin:/usr/share/filebeat/irods_accounting_logs/:ro
     #entrypoint: "/usr/local/bin/docker-entrypoint"
     #command: "-E FOO=BAR" # to overwrite the -e that disables logging to file!
 
