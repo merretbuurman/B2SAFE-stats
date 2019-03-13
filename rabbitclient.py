@@ -31,8 +31,8 @@ logger = logging.getLogger('stat_info_distributor')
 root = logging.getLogger()
 root.setLevel(logging.DEBUG)
 #handler = logging.StreamHandler(sys.stdout)
-filepath = BASE_DIR + os.sep + 'stat_info_distributor.log'
-handler = logging.handlers.RotatingFileHandler(filename,
+logfilename = BASE_DIR + os.sep + 'stat_info_distributor.log'
+handler = logging.handlers.RotatingFileHandler(logfilename,
     maxBytes=STAT_LOGS_MAX_SIZE,
     backupCount=STAT_LOGS_BACKUP_COUNT
 )

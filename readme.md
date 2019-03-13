@@ -37,6 +37,7 @@ stderr:
 
 ```
 [frieda@friedasserver ~]$ # Just run the collection and echo the info (no storing):
+[frieda@friedasserver ~]$ DIR="/var/lib/irods/msiExecCmd_bin"
 [frieda@friedasserver ~]$ sudo $DIR/quota_stats_collector.py 
 [frieda@friedasserver ~]$ sudo $DIR/system_analyser.sh 
 ```
