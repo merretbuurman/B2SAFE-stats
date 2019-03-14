@@ -314,9 +314,52 @@ Using RabbitMQ
 
 How to test
 
-* *user_login*: Should run automatically
-* *user_op*: Run `iput -f test.txt`
-* *b2safe_op*: No idea how to test, prob by replication
-* *system_stats*: Run `system_stats.sh` (or cronjob)
-* *quota_stats*: Run `quota_stats.sh` (or cronjob)
+```
+# on b2safe machine:
 
+sudo -i
+cd /var/lib/irods/msiExecCmd_bin
+
+### user login:
+# should run automatically
+
+### system_stats:
+./system_stats.sh
+
+### quota_stats:
+./quota_stats.sh
+
+### user_op:
+echo "foo" > test.txt
+iput -f test.txt
+
+### b2safe_op:
+# Dunno how!
+
+### Check:
+# Check if stuff has been written into the logs:
+sudo ls -lpah /var/lib/irods/log/seadatacloud
+
+# If not, check here:
+vi /var/lib/irods/msiExecCmd_bin/quota.json
+vi /var/lib/irods/msiExecCmd_bin/quota-error.log
+vi /var/lib/irods/msiExecCmd_bin/system_stats.json
+vi /var/lib/irods/msiExecCmd_bin/system_stats-error.log
+
+### Check on RabbitMQ
+# Check if messages in the queues
+
+### Check on logstash:
+# Check in log if messages were parsed, from Filebeat
+# Check in log if messages were parsed, from RabbitMQ
+
+### Check on Filebeat:
+# Cannot see
+
+### Check on ElasticSearch
+
+
+
+
+
+```
