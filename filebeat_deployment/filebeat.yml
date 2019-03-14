@@ -1,6 +1,6 @@
 filebeat.inputs:
 
-# user_login = access = auth stats (triggered by ?)
+# user_login = access = auth stats (triggered by iRODS, when added PEP)
 - type: log
   enabled: true
   paths:
@@ -15,7 +15,7 @@ filebeat.inputs:
 
 
 
-# b2safe_op = b2safe_operation = b2safe_b2safe (triggered by ?)
+# b2safe_op = b2safe_operation = b2safe_b2safe (triggered by replication etc.)
 - type: log
   enabled: true
   paths:
@@ -44,7 +44,7 @@ filebeat.inputs:
     log_type: "user_op"
 
 
-# quota_stats = acc = accounting_stats = irods_accounting (triggered by cron job)
+# quota_stats = accounting_stats = irods_accounting (triggered by cron job)
 - type: log
   enabled: true
   paths:
