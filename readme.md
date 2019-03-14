@@ -183,6 +183,7 @@ configured.
 * The whole thing has to be triggered by a cronjob
 * Claudio's Logstash conf: "rabbitmq_b2safe_acc.conf" (exchange "b2safe", key "accounting_stats", queue "accounting", type "irods_accounting")
 
+*WARNING:* The Logstash config for this contains the zone, so it is not generic!
 
 Example:
 
