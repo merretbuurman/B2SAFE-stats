@@ -71,15 +71,23 @@ $ crontab -l
 
 
 
-# RabbitMQ or Filebeat
+# RabbitMQ and/or Filebeat
 
 Information is sent to RabbitMQ _and/or_ written to log files
-by the *rabbitclient.py*.
+by the *rabbitclient.py* which runs on the B2SAFE machine.
+
+The log files can then be picked up by Filebeat.
+
+There is two variables inside the script that you can use to
+switch between Filebeat and RabbitMQ (or both):
+
+```
+SEND_TO_RABBIT = False
+WRITE_TO_CATEGORY_LOG = True
+```
 
 
-## Client
-
-### Hand-on 
+## Test the client
 
 Test the `rabbitclient.py` script:
 
@@ -105,7 +113,7 @@ be written to file. However, some errors that can happen server-side which
 lead to messages being lost, cannot be detected, so messages are not guaranteed
 to arrive.
 
-### What does it do?
+## What does the client do?
 
 `rabbitclient.py` is a client that is called by B2SAFE when specific
 rules are executed, or by the cronjobs above.
@@ -137,9 +145,9 @@ to arrive.
 
 
 
-## Run filebeat
+# Filebeat
 
-In order to collect the info from the logs and send them to
+In order to collect the info from the log files and send them to
 Logstash, run a Filebeat instance, using the files 
 `docker-compose.yml` and `filebeat.yml` from this repo.
 
@@ -158,16 +166,25 @@ docker-compose up
 
 ```
 
-## Configure Logstash
+# Logstash
 
-For each of the five types, the Logstash instance has to be
-configured.
+Logstash should and parse the messages. No matter if you use
+Filebeat or RabbitMQ, the Logstash instance has to be
+configured to parse the five categories using "filters".
 
-* input: Either a rabbitmq-input (where Logstash polls for messages)
- or a beat-input (where logstash listens for pushed messages)
-* filters: Filters for all five types of messages
-* output: Output to RabbitMQ or to ElasticSearch...
+Also, an input and an output has to be configured in any case.
 
+If you use RabbitMQ for shipping the messages, you need to add
+a rabbitmq-input (where Logstash polls for messages). Else, a
+beat-input (where logstash listens for pushed messages).
+
+If you use ElasticSearch as an output to store parsed messages,
+an elasticsearch output has to be configured. Else a 
+RabbitMQ output (where parsed messages will sit and wait
+for further handling).
+
+All of the required config can be found in the directory
+_logstash_config_.
 
 
 
@@ -312,11 +329,12 @@ Using RabbitMQ
 * Create queues for the five categories: _b2safe_op_, _user_op_, user_login_, _system_stats_, _quota_stats_
 * Add RabbitMQ info (host, username, password, ...) to rabbitclient.py
 
-How to test
+# Did it work? How to check...
+
+
+## On B2SAFE machine
 
 ```
-# on b2safe machine:
-
 sudo -i
 cd /var/lib/irods/msiExecCmd_bin
 
@@ -345,19 +363,66 @@ vi /var/lib/irods/msiExecCmd_bin/quota.json
 vi /var/lib/irods/msiExecCmd_bin/quota-error.log
 vi /var/lib/irods/msiExecCmd_bin/system_stats.json
 vi /var/lib/irods/msiExecCmd_bin/system_stats-error.log
+```
 
-### Check on RabbitMQ
-# Check if messages in the queues
+## On Filebeat machine
 
-### Check on logstash:
-# Check in log if messages were parsed, from Filebeat
-# Check in log if messages were parsed, from RabbitMQ
+If the loglevel is debug (by setting _logging.level: debug_ in _filebeat.yml_), you can see each published event in the logs on stdout.
 
-### Check on Filebeat:
-# Cannot see
+Run `docker-compose logs -f --tail=100` on the filebeat machine in the docker-compose directory to see the logs.
 
-### Check on ElasticSearch
 
+
+## On RabbitMQ (web GUI)
+
+If RabbitMQ used as input (instead of Filebeat), check if the (un-parsed)
+messages turned up in the queues:
+http://<rabbit-instance>:15672/#/queues/<virtual_host>/<category>
+
+Examples:
+
+  * http://sdc-b2host-test.dkrz.de:15672/#/queues/b2safe_log_test/user_login
+  * http://sdc-b2host-test.dkrz.de:15672/#/queues/b2safe_log_test/user_op
+  * http://sdc-b2host-test.dkrz.de:15672/#/queues/b2safe_log_test/b2safe_op
+  * http://sdc-b2host-test.dkrz.de:15672/#/queues/b2safe_log_test/quota_stats
+  * http://sdc-b2host-test.dkrz.de:15672/#/queues/b2safe_log_test/system_stats
+
+If RabbitMQ is used as output (to be consumed by APEL later), check if the parsed
+messages arrived here:
+http://sdc-b2host-test.dkrz.de:15672/#/queues/seadata_accounting/apel_accounting_pre
+
+## On Logstash machine
+
+If the stdout-output is activated in the output config, you can see on the logs each message that was received and parsed.
+
+Activate it  by adding this in output.conf:
+
+```
+  stdout {
+    codec => rubydebug {
+      metadata => true
+    }
+  }
+```
+
+Then run `docker-compose logs -f --tail=100` on the logstash machine in the docker-compose directory to see the logs:
+
+  * ...from Filebeat (with field _"received_via_beats"_)
+  * ...from RabbitMQ (with field _"received_via_rabbit"_)
+
+## On ElasticSearch (REST API)
+
+If ElasticSearch was used as the output for the parsed messages, you can check
+if these indices were created:
+http://<elastic-instance>:9200/apel_sdc_<category>_<date>/_search?pretty=true&size=100&q=*:*
+
+Example:
+
+* http://sdc-b2host-test.dkrz.de:9200/apel_sdc_user_op_2019-03-14/_search?pretty=true&size=100&q=*:*
+* http://sdc-b2host-test.dkrz.de:9200/apel_sdc_user_login_2019-03-14/_search?pretty=true&size=100&q=*:*
+* http://sdc-b2host-test.dkrz.de:9200/apel_sdc_quota_stats_2019-03-14/_search?pretty=true&size=100&q=*:*
+* http://sdc-b2host-test.dkrz.de:9200/apel_sdc_system_stats_2019-03-14/_search?pretty=true&size=100&q=*:*
+* http://sdc-b2host-test.dkrz.de:9200/apel_sdc_b2safe_op_2019-03-14/_search?pretty=true&size=100&q=*:*
 
 
 
