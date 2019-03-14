@@ -1,3 +1,5 @@
+name: "b2safe_accounting"
+
 filebeat.inputs:
 
 # user_login = access = auth stats (triggered by iRODS, when added PEP)
