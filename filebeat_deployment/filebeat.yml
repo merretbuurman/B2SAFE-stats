@@ -48,7 +48,7 @@ filebeat.inputs:
 - type: log
   enabled: true
   paths:
-    - "/usr/share/filebeat/irods_accounting_logs/quota.log"
+    - "/usr/share/filebeat/irods_accounting_logs/accounting_stats.log"
   fields_under_root: true
   fields:
     is_seadata: true
