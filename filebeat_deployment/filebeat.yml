@@ -11,7 +11,7 @@ filebeat.inputs:
     is_apel_accounting: true
     is_from_eudat_seadata_filebeat: true
     filter_code: "de.dkrz.seadata.filter_code.apel.20190313"
-    log_type: "de.dkrz.seadata.filter_code.apel.user_login.20190313"
+    log_type: "user_login"
 
 
 
@@ -26,7 +26,7 @@ filebeat.inputs:
     is_apel_accounting: true
     is_from_eudat_seadata_filebeat: true
     filter_code: "de.dkrz.seadata.filter_code.apel.20190313"
-    log_type: "de.dkrz.seadata.filter_code.apel.b2safe_op.20190313"
+    log_type: "b2safe_op"
 
 
 
@@ -41,7 +41,7 @@ filebeat.inputs:
     is_apel_accounting: true
     is_from_eudat_seadata_filebeat: true
     filter_code: "de.dkrz.seadata.filter_code.apel.20190313"
-    log_type: "de.dkrz.seadata.filter_code.apel.user_op.20190313"
+    log_type: "user_op"
 
 
 # quota_stats = acc = accounting_stats = irods_accounting (triggered by cron job)
@@ -55,19 +55,7 @@ filebeat.inputs:
     is_apel_accounting: true
     is_from_eudat_seadata_filebeat: true
     filter_code: "de.dkrz.seadata.filter_code.apel.20190313"
-    log_type: "de.dkrz.seadata.filter_code.apel.quota_stats.20190313"
-
-- type: log
-  enabled: true
-  paths:
-    - "/usr/share/filebeat/irods_accounting_logs/quota-error.log"
-  fields_under_root: true
-  fields:
-    is_seadata: true
-    is_apel_accounting: true
-    is_from_eudat_seadata_filebeat: true
-    filter_code: "de.dkrz.seadata.filter_code.apel.20190313"
-    log_type: "de.dkrz.seadata.filter_code.apel.user_op.error.20190313"
+    log_type: "quota_stats"
 
 # system_stats = sys (triggered by cron job)
 - type: log
@@ -80,19 +68,8 @@ filebeat.inputs:
     is_apel_accounting: true
     is_from_eudat_seadata_filebeat: true
     filter_code: "de.dkrz.seadata.filter_code.apel.20190313"
-    log_type: "de.dkrz.seadata.filter_code.apel.system_stats.20190313"
+    log_type: "system_stats"
 
-- type: log
-  enabled: true
-  paths:
-    - "/usr/share/filebeat/irods_accounting_logs/system_stats-error.log"
-  fields_under_root: true
-  fields:
-    is_seadata: true
-    is_apel_accounting: true
-    is_from_eudat_seadata_filebeat: true
-    filter_code: "de.dkrz.seadata.filter_code.apel.20190313"
-    log_type: "de.dkrz.seadata.filter_code.apel.system_stats.error.20190313"
 
 ###
 ### Output to Logstash
