@@ -15,7 +15,7 @@ filebeat.inputs:
     is_from_eudat_seadata_filebeat: true
     filter_code: "de.dkrz.seadata.filter_code.apel.20190313"
     log_type: "user_login"
-
+    origin: "cineca"  # TODO adapt!
 
 
 # b2safe_op = b2safe_operation = b2safe_b2safe (triggered by replication etc.)
@@ -31,7 +31,7 @@ filebeat.inputs:
     is_from_eudat_seadata_filebeat: true
     filter_code: "de.dkrz.seadata.filter_code.apel.20190313"
     log_type: "b2safe_op"
-
+    origin: "cineca"  # TODO adapt!
 
 
 # user_op = operation (triggered by rules)
@@ -47,6 +47,7 @@ filebeat.inputs:
     is_from_eudat_seadata_filebeat: true
     filter_code: "de.dkrz.seadata.filter_code.apel.20190313"
     log_type: "user_op"
+    origin: "cineca"  # TODO adapt!
 
 
 # quota_stats = accounting_stats = irods_accounting (triggered by cron job)
@@ -62,6 +63,7 @@ filebeat.inputs:
     is_from_eudat_seadata_filebeat: true
     filter_code: "de.dkrz.seadata.filter_code.apel.20190313"
     log_type: "quota_stats"
+    origin: "cineca"  # TODO adapt!
 
 # system_stats = sys (triggered by cron job)
 - type: log

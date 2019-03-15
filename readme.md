@@ -320,7 +320,8 @@ user=claudio;zone=sdcCineca;rule=EUDATReplication;status=true;response=source=/s
 Using Filebeat
 
 * Install Filebeat, to read the proper logs and send to Logstash
-* Add Filebeat input to Logstash
+* Change the "origin" field in filebeat.yml for your site's acronym!
+* Add Filebeat input to Logstash config
 
 Using RabbitMQ
 
