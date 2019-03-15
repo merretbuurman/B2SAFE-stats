@@ -6,7 +6,8 @@ filebeat.inputs:
 - type: log
   enabled: true
   paths:
-    - "/usr/share/filebeat/irods_accounting_logs/user_login.log"
+    - "/usr/share/filebeat/irods_accounting_logs/user_login.log" # mounted in container
+    #- "/var/lib/irods/log/seadatacloud/user_login.log"          # real directory
   fields_under_root: true
   fields:
     is_seadata: true
@@ -21,7 +22,8 @@ filebeat.inputs:
 - type: log
   enabled: true
   paths:
-    - "/usr/share/filebeat/irods_accounting_logs/b2safe_op.log"
+    - "/usr/share/filebeat/irods_accounting_logs/b2safe_op.log" # mounted in container
+    #- "/var/lib/irods/log/seadatacloud/b2safe_op.log"          # real directory
   fields_under_root: true
   fields:
     is_seadata: true
@@ -36,7 +38,8 @@ filebeat.inputs:
 - type: log
   enabled: true
   paths:
-    - "/usr/share/filebeat/irods_accounting_logs/user_op.log"
+    - "/usr/share/filebeat/irods_accounting_logs/user_op.log" # mounted in container
+    #- "/var/lib/irods/log/seadatacloud/user_op.log"          # real directory
   fields_under_root: true
   fields:
     is_seadata: true
@@ -50,7 +53,8 @@ filebeat.inputs:
 - type: log
   enabled: true
   paths:
-    - "/usr/share/filebeat/irods_accounting_logs/quota_stats.log"
+    - "/usr/share/filebeat/irods_accounting_logs/quota_stats.log" # mounted in container
+    #- "/var/lib/irods/log/seadatacloud/quota_stats.log"          # real directory
   fields_under_root: true
   fields:
     is_seadata: true
@@ -63,7 +67,8 @@ filebeat.inputs:
 - type: log
   enabled: true
   paths:
-    - "/usr/share/filebeat/irods_accounting_logs/system_stats.log"
+    - "/usr/share/filebeat/irods_accounting_logs/system_stats.log" # mounted in container
+    #- "/var/lib/irods/log/seadatacloud/system_stats.log"          # real directory
   fields_under_root: true
   fields:
     is_seadata: true
