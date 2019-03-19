@@ -78,6 +78,7 @@ filebeat.inputs:
     is_from_eudat_seadata_filebeat: true
     filter_code: "de.dkrz.seadata.filter_code.apel.20190313"
     log_type: "system_stats"
+    origin: "cineca"  # TODO adapt!
 
 
 ###
